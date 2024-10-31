@@ -29,7 +29,6 @@ class Particle:
         self.dataloader = dataloader
 
     def initialize_velocity(self, model):
-        # Initialize velocity. You can use a copy of the model with zeroed parameters.
         velocity = {}
         for name, param in model.named_parameters():
             velocity[name] = torch.zeros_like(param)
@@ -114,8 +113,6 @@ def apply_mutation_by_type(model, dataloader, mutation_type):
         model = None
     return model
 
-
-# Load data
 batch_size = 64
 data_transforms = {
         'test':
@@ -135,20 +132,17 @@ data_transforms = {
             ]),
     }
 
-# Load the full dataset
 full_data_set = datasets.CIFAR100(root='.\data', train=False, download=True,
                                       transform=data_transforms['test'])
 
-# Get dataset length
 dataset_length = len(full_data_set)
 subset_length = int(1 * dataset_length)
 subset_indices = list(range(subset_length))
-# Create a subset dataset
+
 data_sets = {'test': Subset(full_data_set, subset_indices)}
 test_loader = DataLoader(data_sets['test'], batch_size=batch_size, shuffle=False, num_workers=0)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# Load pre-trained model
 model_path = '/models/AlexNet/train_model/.pth'
 model = AlexNet().to(device)
 model.load_state_dict(torch.load(model_path), strict=False)

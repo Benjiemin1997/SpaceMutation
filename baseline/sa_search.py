@@ -41,12 +41,8 @@ def simulated_annealing(model, dataloader, initial_temperature, cooling_rate, ma
 
         new_metrics = composite_evaluate_model(new_model, dataloader, 0.5, 0.1, 0.25, 1.0)
         new_accuracy, new_nbc, new_snac, new_nc = new_metrics
-
-        # 计算能量差
         delta_accuracy = new_accuracy - current_accuracy
         acceptance_probability = math.exp(-delta_accuracy / temperature)
-
-        # 决定是否接受新模型
         if delta_accuracy > 0 or random.random() < acceptance_probability:
             current_model = new_model
             current_metrics = new_metrics
@@ -82,20 +78,15 @@ data_transforms = {
             ]),
     }
 
-# Load the full dataset
+
 full_data_set = datasets.CIFAR100(root='.\data', train=False, download=True,
                                       transform=data_transforms['test'])
-
-# Get dataset length
 dataset_length = len(full_data_set)
 subset_length = int(1 * dataset_length)
 subset_indices = list(range(subset_length))
-# Create a subset dataset
 data_sets = {'test': Subset(full_data_set, subset_indices)}
 test_loader = DataLoader(data_sets['test'], batch_size=batch_size, shuffle=False, num_workers=0)
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# Load pre-trained model
 model_path = '/models/AlexNet/train_model/.pth'
 model = AlexNet().to(device)
 model.load_state_dict(torch.load(model_path), strict=False)
