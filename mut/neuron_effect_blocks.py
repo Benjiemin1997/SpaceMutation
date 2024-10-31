@@ -16,12 +16,10 @@ def neuron_effect_block(model, proportion=0.5):
 
     with torch.no_grad():
         if isinstance(selected_layer, nn.Linear):
-            # For Linear layers, we want to affect the input neurons.
             num_neurons = selected_layer.in_features
             neuron_indices = random.sample(range(num_neurons), int(proportion * num_neurons))
             selected_layer.weight[:, neuron_indices] = 0
         elif isinstance(selected_layer, nn.Conv2d):
-            # For Conv2d layers, we want to affect the output channels.
             num_neurons = selected_layer.out_channels
             neuron_indices = random.sample(range(num_neurons), int(proportion * num_neurons))
             selected_layer.weight[neuron_indices, :, :, :] = 0

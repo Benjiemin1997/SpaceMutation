@@ -103,7 +103,5 @@ if __name__ == "__main__":
     try:
         subprocess.run(["python3", "process_run.py"])
     finally:
-        # 结束能耗监控
         print("Energy consumption monitoring has ended")
-        # 停止监控线程
         energy_thread.join()

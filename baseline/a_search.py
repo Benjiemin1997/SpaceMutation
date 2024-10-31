@@ -53,7 +53,7 @@ def apply_mutation_by_type(model, dataloader, mutation_type):
 def heuristic_cost_estimate(node, goal,dataloader):
     node_metrics = composite_evaluate_model(node.state, dataloader, 0.5, 0.1, 0.25, 1.0)
     goal_metrics = goal
-    heuristic = abs(goal_metrics[0] - node_metrics[0])  # 以准确率为基准
+    heuristic = abs(goal_metrics[0] - node_metrics[0])  
     return heuristic
 
 def actual_cost_to_reach(node,dataloader):

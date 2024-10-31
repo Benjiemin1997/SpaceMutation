@@ -59,14 +59,12 @@ def construct_initial_solution(model, dataloader, pheromone_matrix):
 
 
 def select_mutation_based_on_pheromones(pheromone_matrix):
-    # 基于信息素选择变异类型
     total_pheromone = sum(pheromone_matrix.values())
     probabilities = {mt: p / total_pheromone for mt, p in pheromone_matrix.items()}
     return np.random.choice(list(probabilities.keys()), p=list(probabilities.values()))
 
 
 def update_pheromones(pheromone_matrix, ants_solutions, evaporation_rate, q,dataloader):
-    # 信息素更新规则
     for mutation_type in pheromone_matrix:
         pheromone_matrix[mutation_type] *= (1 - evaporation_rate)
 

@@ -7,14 +7,14 @@ import paramiko
 from scp import SCPClient
 from torchvision import datasets
 
-#Configure server information
+
 servers = [
     {'host': 'xxx', 'username': 'xxx', 'password': 'xxx', 'path': 'xxx'},
     {'host': 'xxx', 'username': 'xxx', 'password': 'xxx', 'path': 'xxx'},
     # Add more server information
 ]
 
-test_dataset = datasets.CIFAR100(root='\SpaceMutation\data', train=False, download=True)
+test_dataset = datasets.CIFAR100(root='./data', train=False, download=True)
 
 # Calculate the amount of data allocated to each server
 total_images = len(test_dataset)
@@ -51,7 +51,6 @@ def transfer_to_server(server, dataset, indices):
     ssh.close()
 
 
-# 分配数据并传输
 def parallel_transfer(servers, dataset, images_per_server):
     with ThreadPoolExecutor(max_workers=len(servers)) as executor:
         futures = []
@@ -62,8 +61,8 @@ def parallel_transfer(servers, dataset, images_per_server):
             futures.append(executor.submit(transfer_to_server, server, dataset, indices))
 
         for future in futures:
-            future.result()  # 阻塞，直到每个传输任务完成
+            future.result()
 
 
-# 开始并行传输
+
 parallel_transfer(servers, test_dataset, images_per_server)

@@ -53,7 +53,7 @@ def get_activations(model, inputs, device):
     model(inputs.to(device))
     for hook in hooks:
         hook.remove()
-    return activations  # Return the collected activations
+    return activations
 
 
 def composite_evaluate_model(model, data_loader, high_n, low_n, threshold, high_n_s):
@@ -84,7 +84,7 @@ def composite_evaluate_model(model, data_loader, high_n, low_n, threshold, high_
             outputs = model(images)
 
             nc_compute(images, model, neuron_activated, threshold)
-            activations = get_activations(model, images, device)  # Call get_activations and use its return value
+            activations = get_activations(model, images, device)
 
             lower_corner_neurons, total_neurons, upper_corner_neurons = nbc_compute(activations, high_n, low_n,
                                                                                     lower_corner_neurons, total_neurons,
@@ -136,7 +136,7 @@ def composite_evaluate_model_mnist(model, data_loader, high_n, low_n, threshold,
             labels_flat = labels.repeat_interleave(28 * 28).view(-1)
 
             nc_compute(images, model, neuron_activated, threshold)
-            activations = get_activations(model, images, device)  # Call get_activations and use its return value
+            activations = get_activations(model, images, device)
 
             lower_corner_neurons, total_neurons, upper_corner_neurons = nbc_compute(activations, high_n, low_n,
                                                                                     lower_corner_neurons, total_neurons,

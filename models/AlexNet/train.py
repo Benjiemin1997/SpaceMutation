@@ -8,67 +8,55 @@ from torch.utils.data import DataLoader
 
 from models.AlexNet.model_alexnet import AlexNet
 
-# 其他变量保持不变
 batch_size = 64
 learning_rate = 3e-3
 num_epochs = 30
 
-# 数据预处理
 data_transforms = {
     'train':
         transforms.Compose([
-            transforms.Resize(256),  # 将图像大小调整为256x256
-            transforms.CenterCrop(224),  # 中心裁剪为224x224
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
             transforms.RandomHorizontalFlip(p=0.5),
             transforms.ToTensor(),
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
         ]),
     'test':
         transforms.Compose([
-            transforms.Resize(256),  # 将图像大小调整为256x256
-            transforms.CenterCrop(224),  # 中心裁剪为224x224
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
             transforms.ToTensor(),
             transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010))
         ]),
 }
 
-# 加载数据集
 data_sets = {
     'train': datasets.CIFAR100(root='./data', train=True, download=True, transform=data_transforms['train']),
     'test': datasets.CIFAR100(root='./data', download=True, transform=data_transforms['test'])
 }
 
-# 数据加载器
 dataloaders = {
     'train': DataLoader(data_sets['train'], batch_size=batch_size, shuffle=True, num_workers=0),
     'test': DataLoader(data_sets['test'], batch_size=batch_size, shuffle=False, num_workers=0)
 }
 
-# 设备
+
 use_cuda = torch.cuda.is_available()
 print(use_cuda)
 device = torch.device("cuda:0" if use_cuda else "cpu")
-
-# 初始化模型
 model = AlexNet(num_classes=len(data_sets['train'].classes)).to(device)
-
-# 损失函数
 criterion = nn.CrossEntropyLoss()
-
-# 优化器
 optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=5e-4)
-
-# 学习率调度器
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
-# 主循环
+
 train_acces = []
 test_acces = []
 train_losses = []
 test_losses = []
 total_step = len(dataloaders['train'])
 test_loss_min = np.Inf
-save_dir = 'D://pyproject//NetMut//models//AlexNet//train_model//'
+save_dir = './root'
 
 for epoch in range(num_epochs):
     print(f'Epoch {epoch}\n')

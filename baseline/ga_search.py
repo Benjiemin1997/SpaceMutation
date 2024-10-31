@@ -19,7 +19,6 @@ from util.seed_set import set_random_seed
 
 
 def initialize_particles(num_particles, model, dataloader):
-    # 初始化粒子群
     particles = []
     for _ in range(num_particles):
         particle = {
@@ -31,15 +30,12 @@ def initialize_particles(num_particles, model, dataloader):
 
 
 def clone_model(model):
-    # 创建一个新模型实例
     cloned_model = type(model)()
-    # 将旧模型的状态字典复制到新模型
     cloned_model.load_state_dict(model.state_dict())
     return cloned_model.to(device)
 
 
 def crossover(parent1, parent2):
-    # 进行简单的权重平均交叉
     alpha = random.uniform(0, 1)
     child = clone_model(parent1)
     for p1, p2, c in zip(parent1.parameters(), parent2.parameters(), child.parameters()):
@@ -48,7 +44,6 @@ def crossover(parent1, parent2):
 
 
 def selection(population, num_parents):
-    # 选择适应度最高的个体作为父母
     population.sort(key=lambda x: x['fitness'], reverse=True)
     parents = population[:num_parents]
     return parents
@@ -83,7 +78,6 @@ def genetic_algorithm(model, dataloader, num_generations, population_size, num_p
         print(f"Generation {generation + 1}/{num_generations}")
         population = evolve_population(population, dataloader, num_offspring, num_parents)
 
-    # 最终选择最佳个体
     population.sort(key=lambda x: x['fitness'], reverse=True)
     best_solution = population[0]['position']
     best_fitness = population[0]['fitness']
@@ -145,9 +139,8 @@ def apply_mutation_by_type(model, dataloader, mutation_type):
 
 
 def evaluate_particle_fitness(particle, dataloader):
-    # 评估粒子的适应度
     metrics = composite_evaluate_model(particle['position'], dataloader, 0.5, 0.1, 0.25, 1.0)
-    fitness = metrics[0]  # 假设我们以accuracy为主要目标
+    fitness = metrics[0] 
     return fitness
 
 
@@ -174,10 +167,10 @@ data_transforms = {
 # Load the full dataset
 full_data_set = datasets.CIFAR100(root='D://pyproject//NetMut//models//AlexNet//data', train=False, download=True,
                                   transform=data_transforms['test'])
-num_particles = 10  # 种群大小
-num_generations = 5  # 代数
-num_parents = 2  # 父母数量
-num_offspring = 5  # 子代数量
+num_particles = 10 
+num_generations = 5
+num_parents = 2 
+num_offspring = 5  
 
 # Get dataset length
 dataset_length = len(full_data_set)

@@ -11,13 +11,10 @@ from torch.utils.data import DataLoader
 
 from models.VGG16.model_vgg16 import VGG16
 
-# 定义VGG16类
-# 其他变量保持不变
 batch_size = 64
 learning_rate = 3e-3
 num_epochs = 30
 
-# 数据预处理
 data_transforms = {
     'train':
     transforms.Compose([
@@ -32,40 +29,39 @@ data_transforms = {
     ]),
 }
 
-# 加载数据集
 data_sets = {
     'train': torchvision.datasets.CIFAR100(root='./data', train=True, download=True, transform=data_transforms['train']),
     'test': torchvision.datasets.CIFAR100(root='./data', download=True, transform=data_transforms['test'])
 }
 
-# 数据加载器
+
 dataloaders = {
     'train': DataLoader(data_sets['train'], batch_size=batch_size, shuffle=True, num_workers=0),
     'test': DataLoader(data_sets['test'], batch_size=batch_size, shuffle=False, num_workers=0)
 }
 
-# 设备
+
 use_cuda = torch.cuda.is_available()
 device = torch.device("cuda:0" if use_cuda else "cpu")
 
-# 初始化模型
+
 model = VGG16(num_classes=len(data_sets['train'].classes)).to(device)
 
-# 损失函数
+
 criterion = nn.CrossEntropyLoss()
 
-# 优化器
+
 optimizer = optim.SGD(model.parameters(), lr=learning_rate, momentum=0.9, weight_decay=5e-4)
 
-# 学习率调度器
+
 scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=10, gamma=0.1)
 
-# 主循环
+
 train_acces, test_acces = [], []
 train_losses, test_losses = [], []
 total_step = len(dataloaders['train'])
 test_loss_min = np.Inf
-save_dir = 'D://pyproject//NetMut//models//VGG16//train_model1//'
+save_dir = './root'
 
 for epoch in range(num_epochs):
     print(f'Epoch {epoch}\n')
