@@ -1,0 +1,12 @@
+Keyword,Count,Percentage
+assert,157,28.81%
+assertEqual,35,6.42%
+assertNotEqual,269,49.36%
+assertTrue,39,7.16%
+assertFalse,12,2.20%
+assertIsNotNone,18,3.30%
+assertIsNone,6,1.10%
+assertIs,2,0.37%
+assertIsNot,2,0.37%
+assertIsInstance,3,0.55%
+assertNotIsInstance,2,0.37%
