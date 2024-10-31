@@ -16,8 +16,8 @@ transform = transforms.Compose([
     transforms.Normalize((0.1307,), (0.3081,))
 ])
 
-train_dataset = datasets.MNIST(root='D://pyproject//NetMut//train', train=True, download=True, transform=transform)
-test_dataset = datasets.MNIST(root='D://pyproject//NetMut//test', train=False, download=True, transform=transform)
+train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
+test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
 
 train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
 test_loader = DataLoader(test_dataset, batch_size=64, shuffle=False)
@@ -26,7 +26,7 @@ model = UNet().to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=1e-3)
 
-save_dir = 'D://pyproject//NetMut//models//UNet//train_model//'
+save_dir = './root'
 
 
 def evaluate(model, data_loader, device):
@@ -60,17 +60,15 @@ for epoch in range(num_epochs):
         labels = labels.to(device)
 
         optimizer.zero_grad()
-        outputs = model(images)  # Output shape is (batch_size, num_classes, height, width)
+        outputs = model(images)
 
-        # Flatten the output and the labels tensor
-        outputs_flat = outputs.permute(0, 2, 3, 1).contiguous().view(-1,
-                                                                     10)  # (batch_size * height * width, num_classes)
-        labels_flat = labels.repeat_interleave(28 * 28).view(-1)  # (batch_size * height * width)
 
-        # Ensure both outputs_flat and labels_flat are in the correct format
+        outputs_flat = outputs.permute(0, 2, 3, 1).contiguous().view(-1,10)
+        labels_flat = labels.repeat_interleave(28 * 28).view(-1)
+
+
         labels_flat = labels_flat.long()
 
-        # Compute the loss
         loss = criterion(outputs_flat, labels_flat)
         loss.backward()
         optimizer.step()

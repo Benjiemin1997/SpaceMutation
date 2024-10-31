@@ -1,9 +1,5 @@
 import os
-
 import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-
 import torch
 import torchvision
 from torchvision import transforms
@@ -66,7 +62,7 @@ train_acces, test_acces = [], []
 train_losses, test_losses = [], []
 total_step = len(dataloaders['train'])
 test_loss_min = np.Inf
-save_dir = 'D://pyproject//NetMut//models//ResNet50//train_model//'
+save_dir = './root'
 for epoch in range(num_epochs):
     print(f'Epoch {epoch}\n')
 

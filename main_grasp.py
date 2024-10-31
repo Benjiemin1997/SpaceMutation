@@ -131,8 +131,8 @@ def apply_mutation_by_type(model, dataloader, mutation_type):
 
 if __name__ == "__main__":
     # Set random seed for reproducibility
-    seed = 10000
-    set_random_seed(seed)
+    #seed = 10000
+    #set_random_seed(seed)
     batch_size = 64
     data_transforms = {
         'test':
@@ -152,7 +152,7 @@ if __name__ == "__main__":
             ]),
     }
     # Load the full dataset
-    full_data_set = datasets.CIFAR100(root='D://pyproject//NetMut//models//AlexNet//data', train=False, download=True,
+    full_data_set = datasets.CIFAR100(root='.\data', train=False, download=True,
                                       transform=data_transforms['test'])
     # Get dataset length
     dataset_length = len(full_data_set)
@@ -164,15 +164,15 @@ if __name__ == "__main__":
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     # Load pre-trained model
-    model_path = './models/ResNet50/train_model/model_epoch_20_acc_97.5020.pth'
+    model_path = './models/ResNet50/train_model/.pth'
     model = ResNet50().to(device)
     model.load_state_dict(torch.load(model_path), strict=False)
     start_time = time.time()
     # Adaptive search and multi-level optimization
-    optimized_model, mutations = grasp(model, test_loader, num_iterations=5, local_search_iterations=5)
+    optimized_model, mutations = grasp(model, test_loader, num_iterations=10, local_search_iterations=10)
     end_time = time.time()
     execution_time = time.time() - start_time
-    torch.save(optimized_model.state_dict(), 'ResNet50_SM.pth')
+    #torch.save(optimized_model.state_dict(), 'ResNet50_SM.pth')
     print(f'Time taken to optimize the model: {execution_time:.2f} seconds')
     print("The total number of mutation operations", len(mutations))
     mutation_model_prompt = modelPromptGenerator(optimized_model)

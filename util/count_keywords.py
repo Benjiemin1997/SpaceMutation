@@ -3,7 +3,7 @@ import re
 import csv
 from collections import defaultdict
 
-# List of keywords to be counted
+
 keywords = [
     "assert", "assertEqual", "assertNotEqual", "assertTrue",
     "assertFalse", "assertIsNotNone", "assertIsNone", "assertIs",
@@ -29,11 +29,11 @@ def count_keywords_in_directory(directory, keywords):
                     total_counts[keyword] += count
     return total_counts
 
-#You can decide the directory where test_oracle is generated
-directory = r"\SpaceMutation\data\test_oracle\Shuffle"
+
+directory = r"./test_oracle/Shuffle"
 keyword_counts = count_keywords_in_directory(directory, keywords)
 total_occurrences = sum(keyword_counts.values())
-output_file = r"\SpaceMutation\data\test_oracle\keyword_counts.csv"
+output_file = r"./test_oracle\keyword_counts.csv"
 
 with open(output_file, 'w', newline='', encoding='utf-8') as csvfile:
     fieldnames = ['Keyword', 'Count', 'Percentage']

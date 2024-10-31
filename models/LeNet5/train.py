@@ -12,8 +12,8 @@ from models.LeNet5.model_lenet5 import LeNet5
 if __name__ == '__main__':
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     batch_size = 256
-    train_dataset = mnist.MNIST(root='D://pyproject//NetMut//train', train=True, transform=ToTensor())
-    test_dataset = mnist.MNIST(root='D://pyproject//NetMut//test', train=False, transform=ToTensor())
+    train_dataset = mnist.MNIST(root='./data', train=True, transform=ToTensor())
+    test_dataset = mnist.MNIST(root='./data', train=False, transform=ToTensor())
     train_loader = DataLoader(train_dataset, batch_size=batch_size)
     test_loader = DataLoader(test_dataset, batch_size=batch_size)
     model = LeNet5().to(device)
@@ -46,7 +46,7 @@ if __name__ == '__main__':
             all_sample_num += current_correct_num.shape[0]
         acc = all_correct_num / all_sample_num
         print('accuracy: {:.3f}'.format(acc), flush=True)
-        torch.save(model.state_dict(), 'D://pyproject//NetMut//models//LeNet5//train_model//mnist_{:.3f}.pth'.format(acc))
+        torch.save(model.state_dict(), './root/mnist_{:.3f}.pth'.format(acc))
         if np.abs(acc - prev_acc) < 1e-4:
             break
         prev_acc = acc

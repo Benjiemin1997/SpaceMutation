@@ -120,14 +120,14 @@ batch_size = 64
 data_transforms = {
         'test':
             transforms.Compose([
-                transforms.Resize(256),  # 将图像大小调整为256x256
-                transforms.CenterCrop(224),  # 中心裁剪为224x224
+                transforms.Resize(256), 
+                transforms.CenterCrop(224), 
                 transforms.ToTensor(),
                 transforms.Normalize((0.4914, 0.4822, 0.4465), (0.2023, 0.1994, 0.2010)),
                 random.choice(
                     [
-                        transforms.RandomHorizontalFlip(p=0.5),  # 水平翻转
-                        transforms.Lambda(lambda img: img + torch.randn_like(img) * 0.1),  # 噪声扰动
+                        transforms.RandomHorizontalFlip(p=0.5), 
+                        transforms.Lambda(lambda img: img + torch.randn_like(img) * 0.1),  
                         transforms.Lambda(lambda img: F.adjust_contrast(img, contrast_factor=1.5))
                     ]
 

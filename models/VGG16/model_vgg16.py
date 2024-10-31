@@ -6,7 +6,6 @@ class VGG16(nn.Module):
     def __init__(self, num_classes=100):
         super(VGG16, self).__init__()
         self.vgg = vgg16(pretrained=True)
-        # 修改分类器部分
         self.vgg.classifier = nn.Sequential(
             nn.Linear(25088, 4096),
             nn.ReLU(True),

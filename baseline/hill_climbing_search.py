@@ -113,7 +113,7 @@ model = AlexNet().to(device)
 model.load_state_dict(torch.load(model_path), strict=False)
 
 max_iterations = 10
-patience = 10  # 如果连续50次没有改进则停止搜索
+patience = 10  
 
 best_solution, best_metrics = hill_climbing_search(model, test_loader, max_iterations, patience)
 torch.save(best_solution.state_dict(), 'AlexNet_Hill.pth')
