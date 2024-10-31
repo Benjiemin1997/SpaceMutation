@@ -76,12 +76,7 @@ def update_pheromones(pheromone_matrix, ants_solutions, evaporation_rate, q,data
 def apply_random_mutation(model, dataloader):
     mutation_type1 = random.choice(['structure', 'weights'])
     mutation_type2 = random.choice(['structure', 'weights'])
-
-    # Apply first mutation
-    print("Applying first mutation")
     model = apply_mutation_by_type(model, dataloader, mutation_type1)
-    # Apply second mutation
-    print("Applying second mutation")
     model = apply_mutation_by_type(model, dataloader, mutation_type2)
 
     return model
@@ -115,11 +110,7 @@ def ant_colony_optimization(model, dataloader, num_ants, num_iterations, evapora
 
     for _ in range(num_iterations):
         ants_solutions = [construct_initial_solution(model, dataloader, pheromone_matrix) for _ in range(num_ants)]
-
-        # Local search
         ants_solutions = [local_search(sol, dataloader, local_search_iterations) for sol, _ in ants_solutions]
-
-        # Update global best solution
         for sol, _ in ants_solutions:
             metrics = composite_evaluate_model(sol, dataloader, 0.5, 0.1, 0.25, 1.0)
             accuracy, _, _, _ = metrics
@@ -136,13 +127,11 @@ def ant_colony_optimization(model, dataloader, num_ants, num_iterations, evapora
 
 
 num_ants = 5
-num_iterations = 5
+num_iterations = 10
 evaporation_rate = 0.5
 q = 10
 local_search_iterations = 5
 
-
-# Load data
 batch_size = 64
 data_transforms = {
     'test':
@@ -159,19 +148,15 @@ data_transforms = {
         ]),
 }
 
-# Load the full dataset
 full_data_set = datasets.CIFAR100(root='.\data', train=False, download=True,
                                   transform=data_transforms['test'])
-# Get dataset length
 dataset_length = len(full_data_set)
 subset_length = int(1 * dataset_length)
 subset_indices = list(range(subset_length))
-# Create a subset dataset
 data_sets = {'test': Subset(full_data_set, subset_indices)}
 test_loader = DataLoader(data_sets['test'], batch_size=batch_size, shuffle=False, num_workers=0)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# Load pre-trained model
 model_path = '/models/AlexNet/train_model/.pth'
 model = AlexNet().to(device)
 model.load_state_dict(torch.load(model_path), strict=False)

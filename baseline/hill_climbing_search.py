@@ -99,7 +99,6 @@ data_transforms = {
         ]),
 }
 
-# Load the full dataset
 full_data_set = datasets.CIFAR100(root='.\data', train=False, download=True,
                                   transform=data_transforms['test'])
 subset_length = int(1 * len(full_data_set))
@@ -111,10 +110,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model_path = '/models/AlexNet/train_model/.pth'
 model = AlexNet().to(device)
 model.load_state_dict(torch.load(model_path), strict=False)
-
 max_iterations = 10
-patience = 10  
-
+patience = 10
 best_solution, best_metrics = hill_climbing_search(model, test_loader, max_iterations, patience)
 torch.save(best_solution.state_dict(), 'AlexNet_Hill.pth')
 print(composite_evaluate_model(best_solution,test_loader,0.5, 0.1, 0.25, 1.0))
