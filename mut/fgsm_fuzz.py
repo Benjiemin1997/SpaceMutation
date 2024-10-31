@@ -28,7 +28,6 @@ def fgsm_fuzz_weight_mnist(model, data_loader, epsilon=0.1):
     model.to(device)
     model.eval()
 
-    # 清空梯度
     for param in model.parameters():
         if param.requires_grad:
             param.grad = None
