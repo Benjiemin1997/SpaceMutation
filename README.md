@@ -35,4 +35,94 @@ You can install [Ollama](https://github.com/ollama/ollama) locally and then proc
 ## Power consumption
 In the power_consumption/process/run.py file, you can set the communication rounds.
 Running python energy.py will initiate the power consumption monitoring during the mutation testing process. 
+
 </br>These devices include the master node, equipped with Intel i7-13260H CPU and NVIDIA RTX 4060 GPU; 2 working
+
+---
+## Container-Based Fault Isolation Demo
+
+This demo provides a **container-based fault isolation example** for mutation testing in **SpaceMutation**.
+
+It demonstrates how mutation operators are executed in **isolated container environments**, ensuring that runtime failures or oracle validation errors are safely contained and do not affect other system components.
+
+The demo applies the mutation operator `gaussian_fuzzing` and validates the mutated model using a **test oracle**.
+
+If an oracle assertion fails or a runtime exception occurs, the system automatically:
+
+- Discards the mutant
+- Restores the original model state (**rollback**)
+- Logs the failure result
+
+This design illustrates how SpaceMutation ensures **safe mutation testing execution in distributed satellite environments**.
+
+---
+
+# Build and Run the Container
+
+Navigate to the demo directory:
+
+```bash
+cd fault_container_demo
+````
+
+Build and run the container:
+
+```bash
+docker compose up --build
+```
+
+---
+
+# Expected Output
+
+After execution, the container will print a result similar to the following.
+
+## Successful Mutation
+
+```json
+{
+  "final_status": "accepted",
+  "details": {
+    "oracle_status": "passed",
+    "mean_abs": 0.03
+  }
+}
+```
+
+## Failed Mutation Example
+
+If the oracle detects an invalid mutation or runtime error:
+
+```json
+{
+  "final_status": "discarded",
+  "error_type": "AssertionError",
+  "error_message": "...",
+  "rollback": "completed"
+}
+```
+
+---
+
+# Result Files
+
+All execution results are stored in:
+
+```
+fault_container_demo/results/
+```
+
+Each run produces a JSON result file describing:
+
+* mutation status
+* oracle validation result
+* error information (if any)
+* rollback status
+
+Example:
+
+```
+results/
+   fault_isolation_result_20260309_210012.json
+```
+
