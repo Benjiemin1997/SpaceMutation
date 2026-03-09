@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  spacemutation_fault_demo:
+    build:
+      context: ..
+      dockerfile: fault_container/Dockerfile
+    container_name: spacemutation_fault_demo
+    volumes:
+      - ./results:/example/fault_container/results
+    restart: "no"
