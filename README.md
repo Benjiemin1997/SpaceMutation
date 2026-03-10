@@ -83,8 +83,7 @@ After execution, the container will print a result similar to the following.
 {
   "final_status": "accepted",
   "details": {
-    "oracle_status": "passed",
-    "mean_abs": 0.03
+    "oracle_status": "passed"
   }
 }
 ```
@@ -97,7 +96,7 @@ If the oracle detects an invalid mutation or runtime error:
 {
   "final_status": "discarded",
   "error_type": "AssertionError",
-  "error_message": "...",
+  "error_message": "Conv2d weights did not change after gaussian fuzzing",
   "rollback": "completed"
 }
 ```
@@ -125,4 +124,5 @@ Example:
 results/
    fault_isolation_result_20260309_210012.json
 ```
+
 
